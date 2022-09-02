@@ -1,7 +1,7 @@
-# tmf-ids-doc
+# tmf-ids-doc - Ran Slicing Usecase
 
 # IDS Documentation
-Documentation for IDS TMF catalyst program
+Documentation for Ran Slicing - IDS TMF catalyst program
 
 ### Code / Configuration Repositories
 
@@ -16,10 +16,23 @@ Run the script b.sh in the base directory to complete the build, create docker i
 
 https://github.com/ashokkumarta/ids-dataapps-ran-slice
 ```
-Source code of a sample dataapp used in the configurations 
+Source code of the generic dataapp used in the configurations.
+To build the docker image from the code
+Build code:
+mvn clean package
+
+Start docker:
+systemctl start docker
+
+Build image:
+sudo docker container prune
+sudo docker image rm ashokkumarta/dataapps-ran-slice:latest
+sudo docker build -t ashokkumarta/dataapps-ran-slice:latest .
+sudo docker push ashokkumarta/dataapps-ran-slice:latest
+
 ```
 
-https://github.com/ashokkumarta/tmf-ids-test/tree/main/dataapps
+https://github.com/ashokkumarta/ran-slice-tmf-ids-app-config/tree/main/dataapps
 
 ```
 Contains multiple configurations of the sample dataapp. Includes configurations for
@@ -38,7 +51,7 @@ Contains multiple configurations of the sample dataapp. Includes configurations 
 
 ```
 
-https://github.com/ashokkumarta/tmf-ids-test/tree/main/connectors/RAN-SHARE-UC-SLOW
+https://github.com/ashokkumarta/ran-slice-tmf-ids-deploy/tree/main/connectors/TMF-RAN-SILC-UC
 
 ```
 IDS connector sample configurations for deployment
@@ -67,13 +80,13 @@ Currently has the following configurations
     
 ```
 
-https://github.com/ashokkumarta/tmf-ids-logs
+https://github.com/ashokkumarta/ran-slice-tmf-ids-logs
 ```
 Configuration and files to initialise the logs.io instance
 
 ```
 
-https://github.com/ashokkumarta/tmf-ids-bin
+https://github.com/ashokkumarta/ran-slice-tmf-ids-bin/tree/main/d-slow
 
 ```
 scripts to start the instances. Following scripts are included in this repo
