@@ -21,6 +21,8 @@ To build the docker image from the code
 Build code:
 mvn clean package
 
+Copy the target jar file to stable folder
+
 Start docker:
 systemctl start docker
 
@@ -36,51 +38,115 @@ https://github.com/ashokkumarta/ran-slice-tmf-ids-app-config/tree/main/dataapps
 
 ```
 Contains multiple configurations of the sample dataapp. Includes configurations for
- 1. csp-recommendations-feedback-app
- 2. csp-sharing-agent-app
- 3. mno1-recommendations-feedback-app
- 4. mno1-sharing-agent-app
- 5. mno2-recommendations-feedback-app
- 6. mno2-sharing-agent-app
- 7. recommendations-incentive-processor-app
- 8. recommendations-processor-app
- 9. regulator-recommendations-app
-10. regulator-recommendations-feedback-processor-app
-11. regulator-recommendations-incentive-app
-12. regulator-usage-data-processor-app
+ 1. csp-resource-management
+ 2. csp-load-optimizer
+ 3. csp-ran-slice-allocation
+ 4. subscriber-1-demand-forecast
+ 5. subscriber-2-demand-forecast
+ 6. subscriber-allocation-confirmation
+ 7. subscriber-optimizer-feedback
+ 
+```
+
+Script to build all the apps
 
 ```
+cd csp-resource-management
+sudo docker image rm ashokkumarta/csp-resource-management:latest
+sudo docker build -t ashokkumarta/csp-resource-management:latest .
+sudo docker push ashokkumarta/csp-resource-management:latest
+cd ../csp-load-optimizer
+sudo docker image rm ashokkumarta/csp-load-optimizer:latest
+sudo docker build -t ashokkumarta/csp-load-optimizer:latest .
+sudo docker push ashokkumarta/csp-load-optimizer:latest
+cd ../csp-ran-slice-allocation
+sudo docker image rm ashokkumarta/csp-ran-slice-allocation:latest
+sudo docker build -t ashokkumarta/csp-ran-slice-allocation:latest .
+sudo docker push ashokkumarta/csp-ran-slice-allocation:latest
+cd ../subscriber-1-demand-forecast
+sudo docker image rm ashokkumarta/subscriber-1-demand-forecast:latest
+sudo docker build -t ashokkumarta/subscriber-1-demand-forecast:latest .
+sudo docker push ashokkumarta/subscriber-1-demand-forecast:latest
+cd ../subscriber-optimizer-feedback
+sudo docker image rm ashokkumarta/subscriber-optimizer-feedback:latest
+sudo docker build -t ashokkumarta/subscriber-optimizer-feedback:latest .
+sudo docker push ashokkumarta/subscriber-optimizer-feedback:latest
+cd ../subscriber-allocation-confirmation
+sudo docker image rm ashokkumarta/subscriber-allocation-confirmation:latest
+sudo docker build -t ashokkumarta/subscriber-allocation-confirmation:latest .
+sudo docker push ashokkumarta/subscriber-allocation-confirmation:latest
+cd ../subscriber-2-demand-forecast
+sudo docker image rm ashokkumarta/subscriber-2-demand-forecast:latest
+sudo docker build -t ashokkumarta/subscriber-2-demand-forecast:latest .
+sudo docker push ashokkumarta/subscriber-2-demand-forecast:latest
+cd ..
+
+```
+
+Ports on which the apps are configured
+
+```
+csp-resource-management: 9001
+csp-load-optimizer: 9002
+csp-ran-slice-allocation : 9003
+
+subscriber-1-demand-forecast : 9101
+subscriber-2-demand-forecast : 9201
+
+subscriber-optimizer-feedback : 9102
+subscriber-allocation-confirmation :9103
+
+```
+
 
 https://github.com/ashokkumarta/ran-slice-tmf-ids-deploy/tree/main/connectors/TMF-RAN-SILC-UC
 
 ```
-IDS connector sample configurations for deployment
+IDS connector configurations for deployment
 For deployment - this repo is sufficient. No need to work on other repos
 Currently has the following configurations
 
-1. regulator - Configuration for running RAN Regulator Instance.
+1. csp - Configuration for running CSP Instance.
 
   To run this, execute the command 
-    docker-compose -f ran-regulator.yaml up
-
-2. csp - Configuration for running CSP Instance.
-
-  To run this, execute the command 
-    docker-compose -f csp.yaml up
+    ./csp.sh
     
-3. mno-1 - Configuration for running MNO-1 Instance.
+2. subscriber-1 - Configuration for running Subscriber-1 Instance.
 
   To run this, execute the command 
-    docker-compose -f mno-1.yaml up
+    ./sub1.sh
     
-4. mno-2 - Configuration for running MNO-2 Instance.
+3. subscriber-2 - Configuration for running Subscriber-2 Instance.
 
   To run this, execute the command 
-    docker-compose -f mno-2.yaml up
+    ./sub2.sh
     
 ```
 
+Commands to create ssl keys for the connectors
+
+```
+
+
+copy ..\etc-locked\consumer-keystore.p12 csp.p12
+keytool -selfcert -alias 1 -storetype PKCS12 -keypass password -keystore csp.p12 -storepass password -ext "SAN=DNS:csp"
+keytool -export -alias 1 -storetype PKCS12 -storepass password -file csp.cer -keystore csp.p12
+keytool -import -noprompt -v -trustcacerts -alias csp -storetype PKCS12 -file csp.cer -keystore truststore.p12 -keypass password -storepass password
+
+copy ..\etc-locked\consumer-keystore.p12 subscriber-1.p12
+keytool -selfcert -alias 1 -storetype PKCS12 -keypass password -keystore subscriber-1.p12 -storepass password -ext "SAN=DNS:subscriber-1"
+keytool -export -alias 1 -storetype PKCS12 -storepass password -file subscriber-1.cer -keystore subscriber-1.p12
+keytool -import -noprompt -v -trustcacerts -alias subscriber-1 -storetype PKCS12 -file subscriber-1.cer -keystore truststore.p12 -keypass password -storepass password
+
+copy ..\etc-locked\consumer-keystore.p12 subscriber-2.p12
+keytool -selfcert -alias 1 -storetype PKCS12 -keypass password -keystore subscriber-2.p12 -storepass password -ext "SAN=DNS:subscriber-2"
+keytool -export -alias 1 -storetype PKCS12 -storepass password -file subscriber-2.cer -keystore subscriber-2.p12
+keytool -import -noprompt -v -trustcacerts -alias subscriber-2 -storetype PKCS12 -file subscriber-2.cer -keystore truststore.p12 -keypass password -storepass password
+
+```
+
 https://github.com/ashokkumarta/ran-slice-tmf-ids-logs
+
 ```
 Configuration and files to initialise the logs.io instance
 
@@ -89,13 +155,11 @@ Configuration and files to initialise the logs.io instance
 https://github.com/ashokkumarta/ran-slice-tmf-ids-bin/tree/main/d-slow
 
 ```
-scripts to start the instances. Following scripts are included in this repo
-regu - starts the regulator instance
+Shortcut scripts to start the instances. Following scripts are included in this repo
 csp - starts the csp instance 
-mno1 - starts the mno-1 instance
-mno2 - starts the mno-2 instance
+sub1 - starts the subscriber-1 instance
+sub2 - starts the subscriber-2 instance
 all - starts all the instances in sequence
-slow - folder containing all the above scripts, to start instances with slow communication speed configuration
 
 logs - starts the logs.io instance
 
