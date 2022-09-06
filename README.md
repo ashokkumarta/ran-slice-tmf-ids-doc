@@ -144,6 +144,27 @@ keytool -selfcert -alias 1 -storetype PKCS12 -keypass password -keystore airport
 keytool -export -alias 1 -storetype PKCS12 -storepass password -file airport-sub2.cer -keystore airport-sub2.p12
 keytool -import -noprompt -v -trustcacerts -alias airport-sub2 -storetype PKCS12 -file airport-sub2.cer -keystore truststore.p12 -keypass password -storepass password
 
+=========
+Keys for Orange, Hospital, Airport - use case
+
+copy ..\etc-locked\consumer-keystore.p12 orange.p12
+keytool -selfcert -alias 1 -storetype PKCS12 -keypass password -keystore orange.p12 -storepass password -ext "SAN=DNS:orange"
+keytool -export -alias 1 -storetype PKCS12 -storepass password -file orange.cer -keystore orange.p12
+keytool -import -noprompt -v -trustcacerts -alias orange -storetype PKCS12 -file orange.cer -keystore truststore.p12 -keypass password -storepass password
+
+copy ..\etc-locked\consumer-keystore.p12 hospital.p12
+keytool -selfcert -alias 1 -storetype PKCS12 -keypass password -keystore hospital.p12 -storepass password -ext "SAN=DNS:hospital"
+keytool -export -alias 1 -storetype PKCS12 -storepass password -file hospital.cer -keystore hospital.p12
+keytool -import -noprompt -v -trustcacerts -alias hospital -storetype PKCS12 -file hospital.cer -keystore truststore.p12 -keypass password -storepass password
+
+copy ..\etc-locked\consumer-keystore.p12 airport.p12
+keytool -selfcert -alias 1 -storetype PKCS12 -keypass password -keystore airport.p12 -storepass password -ext "SAN=DNS:airport"
+keytool -export -alias 1 -storetype PKCS12 -storepass password -file airport.cer -keystore airport.p12
+keytool -import -noprompt -v -trustcacerts -alias airport -storetype PKCS12 -file airport.cer -keystore truststore.p12 -keypass password -storepass password
+
+=========
+
+
 ```
 
 https://github.com/ashokkumarta/ran-slice-tmf-ids-logs
