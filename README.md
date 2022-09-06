@@ -51,22 +51,23 @@ Contains multiple configurations of the sample dataapp. Includes configurations 
 Script to build all the apps
 
 ```
+
 cd csp-resource-management
-sudo docker image rm ashokkumarta/csp-resource-management:latest
-sudo docker build -t ashokkumarta/csp-resource-management:latest .
-sudo docker push ashokkumarta/csp-resource-management:latest
+sudo docker image rm ashokkumarta/orange-csp-resource-management:latest
+sudo docker build -t ashokkumarta/orange-csp-resource-management:latest .
+sudo docker push ashokkumarta/orange-csp-resource-management:latest
 cd ../csp-load-optimizer
-sudo docker image rm ashokkumarta/csp-load-optimizer:latest
-sudo docker build -t ashokkumarta/csp-load-optimizer:latest .
-sudo docker push ashokkumarta/csp-load-optimizer:latest
+sudo docker image rm ashokkumarta/orange-csp-load-optimizer:latest
+sudo docker build -t ashokkumarta/orange-csp-load-optimizer:latest .
+sudo docker push ashokkumarta/orange-csp-load-optimizer:latest
 cd ../csp-ran-slice-allocation
-sudo docker image rm ashokkumarta/csp-ran-slice-allocation:latest
-sudo docker build -t ashokkumarta/csp-ran-slice-allocation:latest .
-sudo docker push ashokkumarta/csp-ran-slice-allocation:latest
+sudo docker image rm ashokkumarta/orange-csp-ran-slice-allocation:latest
+sudo docker build -t ashokkumarta/orange-csp-ran-slice-allocation:latest .
+sudo docker push ashokkumarta/orange-csp-ran-slice-allocation:latest
 cd ../subscriber-1-demand-forecast
-sudo docker image rm ashokkumarta/subscriber-1-demand-forecast:latest
-sudo docker build -t ashokkumarta/subscriber-1-demand-forecast:latest .
-sudo docker push ashokkumarta/subscriber-1-demand-forecast:latest
+sudo docker image rm ashokkumarta/hospital-sub1-demand-forecast:latest
+sudo docker build -t ashokkumarta/hospital-sub1-demand-forecast:latest .
+sudo docker push ashokkumarta/hospital-sub1-demand-forecast:latest
 cd ../subscriber-optimizer-feedback
 sudo docker image rm ashokkumarta/subscriber-optimizer-feedback:latest
 sudo docker build -t ashokkumarta/subscriber-optimizer-feedback:latest .
@@ -76,9 +77,9 @@ sudo docker image rm ashokkumarta/subscriber-allocation-confirmation:latest
 sudo docker build -t ashokkumarta/subscriber-allocation-confirmation:latest .
 sudo docker push ashokkumarta/subscriber-allocation-confirmation:latest
 cd ../subscriber-2-demand-forecast
-sudo docker image rm ashokkumarta/subscriber-2-demand-forecast:latest
-sudo docker build -t ashokkumarta/subscriber-2-demand-forecast:latest .
-sudo docker push ashokkumarta/subscriber-2-demand-forecast:latest
+sudo docker image rm ashokkumarta/airport-sub2-demand-forecast:latest
+sudo docker build -t ashokkumarta/airport-sub2-demand-forecast:latest .
+sudo docker push ashokkumarta/airport-sub2-demand-forecast:latest
 cd ..
 
 ```
@@ -128,20 +129,20 @@ Commands to create ssl keys for the connectors
 ```
 
 
-copy ..\etc-locked\consumer-keystore.p12 csp.p12
-keytool -selfcert -alias 1 -storetype PKCS12 -keypass password -keystore csp.p12 -storepass password -ext "SAN=DNS:csp"
-keytool -export -alias 1 -storetype PKCS12 -storepass password -file csp.cer -keystore csp.p12
-keytool -import -noprompt -v -trustcacerts -alias csp -storetype PKCS12 -file csp.cer -keystore truststore.p12 -keypass password -storepass password
+copy ..\etc-locked\consumer-keystore.p12 orange-csp.p12
+keytool -selfcert -alias 1 -storetype PKCS12 -keypass password -keystore orange-csp.p12 -storepass password -ext "SAN=DNS:orange-csp"
+keytool -export -alias 1 -storetype PKCS12 -storepass password -file orange-csp.cer -keystore orange-csp.p12
+keytool -import -noprompt -v -trustcacerts -alias orange-csp -storetype PKCS12 -file orange-csp.cer -keystore truststore.p12 -keypass password -storepass password
 
-copy ..\etc-locked\consumer-keystore.p12 subscriber-1.p12
-keytool -selfcert -alias 1 -storetype PKCS12 -keypass password -keystore subscriber-1.p12 -storepass password -ext "SAN=DNS:subscriber-1"
-keytool -export -alias 1 -storetype PKCS12 -storepass password -file subscriber-1.cer -keystore subscriber-1.p12
-keytool -import -noprompt -v -trustcacerts -alias subscriber-1 -storetype PKCS12 -file subscriber-1.cer -keystore truststore.p12 -keypass password -storepass password
+copy ..\etc-locked\consumer-keystore.p12 hospital-sub1.p12
+keytool -selfcert -alias 1 -storetype PKCS12 -keypass password -keystore hospital-sub1.p12 -storepass password -ext "SAN=DNS:hospital-sub1"
+keytool -export -alias 1 -storetype PKCS12 -storepass password -file hospital-sub1.cer -keystore hospital-sub1.p12
+keytool -import -noprompt -v -trustcacerts -alias hospital-sub1 -storetype PKCS12 -file hospital-sub1.cer -keystore truststore.p12 -keypass password -storepass password
 
-copy ..\etc-locked\consumer-keystore.p12 subscriber-2.p12
-keytool -selfcert -alias 1 -storetype PKCS12 -keypass password -keystore subscriber-2.p12 -storepass password -ext "SAN=DNS:subscriber-2"
-keytool -export -alias 1 -storetype PKCS12 -storepass password -file subscriber-2.cer -keystore subscriber-2.p12
-keytool -import -noprompt -v -trustcacerts -alias subscriber-2 -storetype PKCS12 -file subscriber-2.cer -keystore truststore.p12 -keypass password -storepass password
+copy ..\etc-locked\consumer-keystore.p12 airport-sub2.p12
+keytool -selfcert -alias 1 -storetype PKCS12 -keypass password -keystore airport-sub2.p12 -storepass password -ext "SAN=DNS:airport-sub2"
+keytool -export -alias 1 -storetype PKCS12 -storepass password -file airport-sub2.cer -keystore airport-sub2.p12
+keytool -import -noprompt -v -trustcacerts -alias airport-sub2 -storetype PKCS12 -file airport-sub2.cer -keystore truststore.p12 -keypass password -storepass password
 
 ```
 
